@@ -3,5 +3,3 @@ secrets/
 *.env
 .DS_Store
 elements/*.psd
-elements/
-blog/
