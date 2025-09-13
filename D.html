@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>FAQ Demo – Option D</title>
+        <link rel="stylesheet" href="style.css">
+        <style>
+        /* Option D — Bold Accordion with Chevron */
+        .faq-section div:first-child { position: relative; padding-right: 28px; font-size: 1.2rem; font-weight: 800; }
+        .faq-section div:first-child::after { content: '›'; position: absolute; right: 4px; top: 0; transform: rotate(90deg); transition: transform .25s ease; }
+        .faq-section[aria-expanded="true"] div:first-child::after { transform: rotate(270deg); }
+        .faq-section { padding: 16px 18px; border-radius: 10px; margin-bottom: 12px; }
+        .faq-section.active { background: rgba(0,107,163,0.06); }
+        .faq-content { line-height: 1.65; padding-top: 8px; }
+        #faq .dafaq > h3 { margin-bottom: 12px; }
+        </style>
+    </head>
+    <body>
+        <section id="faq">
+            <div class="dafaq">
+                <h3>FAQ (Option D)</h3>
+                <div class="faq-section" role="button" tabindex="0" aria-expanded="false" aria-controls="faq1">
+                    <div>Safety First</div>
+                    <div id="faq1" class="faq-content" role="region" aria-hidden="true">We prioritize safety in all our operations. Our team follows industry standards and uses the latest safety equipment.</div>
+                </div>
+                <div class="faq-section" role="button" tabindex="0" aria-expanded="false" aria-controls="faq2">
+                    <div>Communication is Key</div>
+                    <div id="faq2" class="faq-content" role="region" aria-hidden="true">We keep you informed from consultation to completion, ensuring clear and open communication.</div>
+                </div>
+                <div class="faq-section" role="button" tabindex="0" aria-expanded="false" aria-controls="faq3">
+                    <div>Fully Licensed and Insured</div>
+                    <div id="faq3" class="faq-content" role="region" aria-hidden="true">We are fully licensed and insured for your peace of mind.</div>
+                </div>
+            </div>
+        </section>
+        <script>
+            document.querySelectorAll('.faq-section').forEach(section => {
+                section.addEventListener('click', () => {
+                    const expanded = section.getAttribute('aria-expanded') === 'true';
+                    section.setAttribute('aria-expanded', String(!expanded));
+                    const content = section.querySelector('.faq-content');
+                    if (content) {
+                        if (!expanded) {
+                            content.classList.add('open');
+                            content.style.height = content.scrollHeight + 'px';
+                            content.setAttribute('aria-hidden', 'false');
+                        } else {
+                            content.style.height = content.scrollHeight + 'px';
+                            requestAnimationFrame(() => {
+                                content.style.height = '0px';
+                                content.classList.remove('open');
+                                content.setAttribute('aria-hidden', 'true');
+                            });
+                        }
+                    }
+                    section.classList.toggle('active');
+                });
+                section.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        section.click();
+                    }
+                });
+            });
+        </script>
+    </body>
+</html> 
