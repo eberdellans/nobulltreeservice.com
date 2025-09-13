@@ -1,0 +1,472 @@
+<?php
+$env = array();
+$envPath = dirname(__DIR__) . '/secrets/.env';
+if (is_readable($envPath)) {
+    foreach (file($envPath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $line) {
+        if ($line === '' || $line[0] === '#' || strpos($line, '=') === false) continue;
+        list($k, $v) = array_map('trim', explode('=', $line, 2));
+        $v = trim($v, "\"'\"");
+        $env[$k] = $v;
+    }
+}
+$TURNSTILE_SITE_KEY = isset($env['TURNSTILE_SITE_KEY']) ? $env['TURNSTILE_SITE_KEY'] : '';
+$GAS_ENDPOINT = isset($env['GAS_ENDPOINT']) ? $env['GAS_ENDPOINT'] : '';
+?>
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="style.css">
+        <link rel="icon" href="no-bull-tree-service-bull.png">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Professional tree services including trimming, removal, and more. Serving Eustis, Geneva, Sanford, and Kissimmee.">
+        <meta name="keywords" content="tree service near me, tree removal service, tree trimming service, stump grinding, emergency tree removal">
+        <meta name="author" content="No Bull Tree Service">
+        <meta name="robots" content="index, follow">
+        <meta name="googlebot" content="index, follow">
+        <meta name="google" content="notranslate">
+        <title>No Bull Tree Service - Expert Tree Care</title>
+        <script type="application/ld+json">
+        {
+          "@context": "http://schema.org",
+          "@type": "LocalBusiness",
+          "name": "No Bull Tree Service",
+          "image": "https://www.nobulltreeservice.com/logo.png",
+          "telephone": "407-663-9069",
+          "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "123 Tree Lane",
+            "addressLocality": "Eustis",
+            "addressRegion": "FL",
+            "postalCode": "32726"
+          },
+          "url": "https://www.nobulltreeservice.com"
+        }
+        </script>
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-XXXXX-Y"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);} 
+            gtag('js', new Date());
+
+            gtag('config', 'UA-XXXXX-Y');
+        </script>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+        <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+        <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+    </head>
+    <body>
+        <a href="#main" class="skip-link">Skip to content</a>
+        <nav aria-label="Main Navigation">
+            <div class="nav-content">
+                <button class="hamburger" aria-label="Open menu" aria-controls="mobileMenu" aria-expanded="false">
+                    <span class="hamburger-bar" aria-hidden="true"></span>
+                    <span class="hamburger-bar" aria-hidden="true"></span>
+                    <span class="hamburger-bar" aria-hidden="true"></span>
+                </button>
+                <ul>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#faq">FAQ</a></li>
+                    <li><a href="#service-area">Locations</a></li>
+                    <li><a href="#contact">Contact Us</a></li>
+                    <li><a href="tel:4076639069" class="cta-link" aria-label="Call us at 407-663-9069">Call Us: 407-663-9069</a></li>
+                </ul>
+            </div>
+        </nav>
+        <div class="menu-overlay" hidden></div>
+        <aside id="mobileMenu" class="mobile-menu" hidden aria-hidden="true">
+            <nav aria-label="Mobile Navigation">
+                <ul>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#faq">FAQ</a></li>
+                    <li><a href="#service-area">Locations</a></li>
+                    <li><a href="#contact">Contact Us</a></li>
+                </ul>
+            </nav>
+        </aside>
+        <header>
+            <img src="image/no-bull-tree-service-bull.png" alt="No Bull Tree Service Logo" width="150">
+            <img src="image/no-bull-tree-service-truck.png" alt="No Bull Tree Service Truck" width="150">
+        </header>
+        <main id="main">
+        <h1>Welcome to No Bull Tree Service</h1>
+        <p>Welcome to No Bull Tree Service! We are a quality tree company offering a range of services including tree trimming, debris removal, and more. Our arborist has over 12 years of experience and we are fully licensed and insured.</p>
+        <section id="services">
+            <div class="section-foreground">
+                <h3>Our Services</h3>
+                <div class="service-block">
+                    <h3>Tree Trimming</h3>
+                    <p>Our team provides expert tree trimming services to ensure the health and beauty of your trees. Regular trimming helps prevent disease and promotes strong growth. Trust us to maintain your trees with precision and care.</p>
+                </div>
+                <div class="service-block">
+                    <h3>Debris Removal</h3>
+                    <p>We offer efficient debris removal services to keep your property clean and safe. Our team handles everything from fallen branches to storm debris. Let us help you maintain a tidy and hazard-free environment.</p>
+                </div>
+                <div class="service-block">
+                    <h3>Tree Removal</h3>
+                    <p>Our professionals safely remove trees of all sizes, ensuring minimal impact on your property. Whether it's a dead tree or one that's become a safety hazard, we have the expertise to handle it. Rely on us for safe and efficient tree removal.</p>
+                </div>
+                <div class="service-block">
+                    <h3>Stump Grinding</h3>
+                    <p>We provide stump grinding services to remove unsightly stumps and improve your landscape. Our advanced equipment ensures complete stump removal, preventing regrowth. Enhance your property's appearance with our stump grinding services.</p>
+                </div>
+                <div class="service-block">
+                    <h3>Land Clearing</h3>
+                    <p>Our land clearing services prepare your property for new projects or development. We handle everything from brush removal to large-scale clearing. Trust us to clear your land efficiently and effectively.</p>
+                </div>
+                <div class="service-block">
+                    <h3>Commercial Tree Trimming</h3>
+                    <p>We offer commercial tree trimming services to maintain the safety and appearance of your business property. Our team works with you to create a tailored maintenance plan. Keep your commercial space looking its best with our expert services.</p>
+                </div>
+            </div>
+        </section>
+        <section id="faq">
+            <div class="dafaq">
+                <h3>FAQ</h3>
+                <div class="faq-section" role="button" tabindex="0" aria-expanded="false" aria-controls="faq1">
+                    <div>Safety First</div>
+                    <div id="faq1" class="faq-content" role="region" aria-hidden="true">We prioritize safety in all our operations. Our team is trained to follow industry standards and use the latest safety equipment. Your safety and the safety of our crew are our top priorities.</div>
+                </div>
+                <div class="faq-section" role="button" tabindex="0" aria-expanded="false" aria-controls="faq2">
+                    <div>Communication is Key</div>
+                    <div id="faq2" class="faq-content" role="region" aria-hidden="true">We keep you informed every step of the way. From the initial consultation to the completion of the job, we ensure clear and open communication. Your satisfaction is our goal, and we work closely with you to achieve it.</div>
+                </div>
+                <div class="faq-section" role="button" tabindex="0" aria-expanded="false" aria-controls="faq3">
+                    <div>Proper Personal Protective Equipment</div>
+                    <div id="faq3" class="faq-content" role="region" aria-hidden="true">Our team is equipped with the necessary safety gear. We adhere to strict safety protocols to protect both our workers and your property. Rest assured, we take every precaution to ensure a safe working environment.</div>
+                </div>
+                <div class="faq-section" role="button" tabindex="0" aria-expanded="false" aria-controls="faq4">
+                    <div>Quality Tree Company</div>
+                    <div id="faq4" class="faq-content" role="region" aria-hidden="true">We are committed to providing top-notch services. Our experienced arborists use the best practices to care for your trees. Trust us for quality and reliability in all our tree care services.</div>
+                </div>
+                <div class="faq-section" role="button" tabindex="0" aria-expanded="false" aria-controls="faq5">
+                    <div>Free Estimate</div>
+                    <div id="faq5" class="faq-content" role="region" aria-hidden="true">Contact us for a no-obligation estimate. We provide transparent pricing and detailed information about our services. Let us help you make informed decisions about your tree care needs.</div>
+                </div>
+                <div class="faq-section" role="button" tabindex="0" aria-expanded="false" aria-controls="faq6">
+                    <div>Arborist in field for over 12 years</div>
+                    <div id="faq6" class="faq-content" role="region" aria-hidden="true">Our experienced arborist ensures quality service. With over 12 years in the field, we bring expertise and knowledge to every job. Rely on us for professional and dependable tree care.</div>
+                </div>
+                <div class="faq-section" role="button" tabindex="0" aria-expanded="false" aria-controls="faq7">
+                    <div>Fully Licensed and Insured</div>
+                    <div id="faq7" class="faq-content" role="region" aria-hidden="true">We are fully licensed and insured for your peace of mind. Our credentials reflect our commitment to professionalism and safety. Choose us for reliable and secure tree care services.</div>
+                </div>
+            </div>
+        </section>
+
+        <script>
+            document.querySelectorAll('.faq-section').forEach(section => {
+                section.addEventListener('click', () => {
+                    const expanded = section.getAttribute('aria-expanded') === 'true';
+                    section.setAttribute('aria-expanded', String(!expanded));
+                    const content = section.querySelector('.faq-content');
+                    if (content) {
+                        if (!expanded) {
+                            content.classList.add('open');
+                            content.style.height = content.scrollHeight + 'px';
+                            content.setAttribute('aria-hidden', 'false');
+                        } else {
+                            content.style.height = content.scrollHeight + 'px';
+                            requestAnimationFrame(() => {
+                                content.style.height = '0px';
+                                content.classList.remove('open');
+                                content.setAttribute('aria-hidden', 'true');
+                            });
+                        }
+                    }
+                    section.classList.toggle('active');
+                });
+                section.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        section.click();
+                    }
+                });
+            });
+        </script>
+        <section id="contact">
+            <h2>Contact Us</h2>
+            <div class="section-foreground">
+                <div class="contact-grid">
+                    <div class="contact-cta" aria-labelledby="contact-cta-title">
+                        <h3 id="contact-cta-title">Contact us Today!</h3>
+                        <ul class="contact-list" aria-label="Business contact details">
+                            <li><strong>Name:</strong> No Bull Tree Service</li>
+                            <li><strong>Phone:</strong> <a href="tel:4076639069" class="footer-link">407-663-9069</a></li>
+                            <li><strong>Email:</strong> <a href="mailto:pedro@nobulltreeservice.com" class="footer-link">pedro@nobulltreeservice.com</a></li>
+                        </ul>
+                        <div class="social-icons" aria-label="Social media links">
+                            <a href="https://facebook.com" class="social-icon" aria-label="Facebook" target="_blank" rel="noopener">F</a>
+                            <a href="https://x.com" class="social-icon" aria-label="X (formerly Twitter)" target="_blank" rel="noopener">X</a>
+                            <a href="https://instagram.com" class="social-icon" aria-label="Instagram" target="_blank" rel="noopener">IG</a>
+                        </div>
+                    </div>
+                    <form action="#" method="post" id="contactForm">
+                        <label for="name">Name:</label>
+                        <input type="text" id="name" name="name" required>
+
+                        <label for="phone">Phone:</label>
+                        <input type="tel" id="phone" name="phone" required pattern="[0-9\-\+\(\)\s]{7,}" placeholder="(555) 555-5555" inputmode="tel" maxlength="14">
+
+                        <label for="address">Address:</label>
+                        <input type="text" id="address" name="address" placeholder="123 Tree Lane" required>
+
+                        <div class="form-row">
+                            <div class="form-col">
+                                <label for="city">City:</label>
+                                <input type="text" id="city" name="city" required>
+                            </div>
+                            <div class="form-col form-col--state">
+                                <label for="state">State:</label>
+                                <input type="text" id="state" name="state" maxlength="2" value="FL" readonly required>
+                            </div>
+                            <div class="form-col form-col--zip">
+                                <label for="zip">ZIP:</label>
+                                <input type="text" id="zip" name="zip" pattern="[0-9]{5}" maxlength="5" placeholder="32726" required>
+                            </div>
+                        </div>
+
+                        <label for="message">Message:</label>
+                        <textarea id="message" name="message" rows="4" required></textarea>
+
+                        <div class="turnstile-wrapper">
+                            <div class="cf-turnstile" data-sitekey="<?php echo htmlspecialchars($TURNSTILE_SITE_KEY, ENT_QUOTES); ?>" data-callback="onTurnstileSuccess"></div>
+                            <input type="hidden" id="cf-turnstile-response" name="cf-turnstile-response">
+                        </div>
+
+                        <button type="submit">Submit</button>
+                        <p id="formStatus" aria-live="polite"></p>
+                    </form>
+                </div>
+                <h3 id="service-area">Our Service Area</h3>
+                <div id="map" style="height: 400px;"></div>
+                <script>
+                    var map = L.map('map').setView([28.8, -81.3], 10);
+
+                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                        maxZoom: 18,
+                        attribution: '© OpenStreetMap contributors'
+                    }).addTo(map);
+
+                    var serviceAreas = [
+                        { name: "Eustis", coords: [28.8528, -81.6853] },
+                        { name: "Geneva", coords: [28.7425, -81.1167] },
+                        { name: "Sanford", coords: [28.8029, -81.2695] },
+                        { name: "Kissimmee", coords: [28.2919, -81.4076] }
+                    ];
+
+                    serviceAreas.forEach(area => {
+                        L.marker(area.coords).addTo(map)
+                            .bindPopup(area.name)
+                            .openPopup();
+                    });
+                </script>
+            </div>
+        </section>
+        <script>
+            // Simple input masks for phone and ZIP
+            (function() {
+                var phone = document.getElementById('phone');
+                if (phone) {
+                    phone.addEventListener('input', function(e) {
+                        var digits = phone.value.replace(/\D/g, '').slice(0, 10);
+                        var out = digits;
+                        if (digits.length > 6) {
+                            out = '(' + digits.slice(0,3) + ') ' + digits.slice(3,6) + '-' + digits.slice(6);
+                        } else if (digits.length > 3) {
+                            out = '(' + digits.slice(0,3) + ') ' + digits.slice(3);
+                        } else if (digits.length > 0) {
+                            out = '(' + digits;
+                        }
+                        phone.value = out;
+                    });
+                }
+                var zip = document.getElementById('zip');
+                if (zip) {
+                    zip.addEventListener('input', function() {
+                        zip.value = zip.value.replace(/\D/g, '').slice(0,5);
+                    });
+                }
+            })();
+
+            // Turnstile callback to store token
+            function onTurnstileSuccess(token) {
+                var hidden = document.getElementById('cf-turnstile-response');
+                if (hidden) hidden.value = token;
+            }
+
+            // Mobile menu toggle
+            (function() {
+                var btn = document.querySelector('.hamburger');
+                var drawer = document.getElementById('mobileMenu');
+                var overlay = document.querySelector('.menu-overlay');
+                if (!btn || !drawer || !overlay) return;
+                function openMenu() {
+                    btn.setAttribute('aria-expanded', 'true');
+                    drawer.hidden = false;
+                    overlay.hidden = false;
+                    drawer.setAttribute('aria-hidden', 'false');
+                    document.body.classList.add('menu-open');
+                    setTimeout(function(){ drawer.classList.add('open'); overlay.classList.add('open'); }, 0);
+                }
+                function closeMenu() {
+                    btn.setAttribute('aria-expanded', 'false');
+                    drawer.classList.remove('open');
+                    overlay.classList.remove('open');
+                    drawer.setAttribute('aria-hidden', 'true');
+                    document.body.classList.remove('menu-open');
+                    setTimeout(function(){ drawer.hidden = true; overlay.hidden = true; }, 250);
+                }
+                btn.addEventListener('click', function(){
+                    var expanded = btn.getAttribute('aria-expanded') === 'true';
+                    if (expanded) closeMenu(); else openMenu();
+                });
+                overlay.addEventListener('click', closeMenu);
+                document.addEventListener('keydown', function(e){ if (e.key === 'Escape') closeMenu(); });
+                drawer.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', closeMenu); });
+            })();
+
+            // Form submit to Google Apps Script (server-injected endpoint)
+            (function(){
+                var form = document.getElementById('contactForm');
+                var status = document.getElementById('formStatus');
+                var ENDPOINT = '<?php echo htmlspecialchars($GAS_ENDPOINT, ENT_QUOTES); ?>';
+                if (!form) return;
+                form.addEventListener('submit', function(e){
+                    e.preventDefault();
+                    if (status) status.textContent = '';
+                    var token = document.getElementById('cf-turnstile-response')?.value || '';
+                    if (!token) {
+                        if (status) status.textContent = 'Please complete the Turnstile challenge.';
+                        return;
+                    }
+                    if (!ENDPOINT) {
+                        if (status) status.textContent = 'Form temporarily offline. Please try again later.';
+                        return;
+                    }
+                    var payload = {
+                        name: form.name.value,
+                        phone: form.phone.value,
+                        address: form.address.value,
+                        city: form.city.value,
+                        state: form.state.value,
+                        zip: form.zip.value,
+                        message: form.message.value,
+                        turnstile_token: token
+                    };
+                    fetch(ENDPOINT, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    }).then(function(res){
+                        if (!res.ok) throw new Error('Network');
+                        return res.json().catch(function(){ return {}; });
+                    }).then(function(){
+                        if (status) status.textContent = 'Thanks! Your message has been sent.';
+                        form.reset();
+                        if (window.turnstile && window.turnstile.reset) { window.turnstile.reset(); }
+                    }).catch(function(){
+                        if (status) status.textContent = 'Sorry, something went wrong. Please try again later.';
+                    });
+                });
+            })();
+        </script>
+        <section id="blog">
+            <h2>Blog</h2>
+            <div class="section-foreground">
+                <article>
+                    <h3>How to Choose a Tree Service</h3>
+                    <div class="blog-excerpt">
+                        <p>Choosing the right tree service is crucial for maintaining the health and safety of your trees...</p>
+                        <a href="#" class="blog-toggle" role="button" tabindex="0" aria-expanded="false" aria-controls="blog1">Read more...</a>
+                    </div>
+                    <div id="blog1" class="blog-content" role="region" aria-hidden="true">
+                        <p>Choosing the right tree service is crucial for maintaining the health and safety of your trees. Here are some key factors to consider:</p>
+                        <ul>
+                            <li><strong>Experience:</strong> Look for a company with a proven track record and experienced arborists.</li>
+                            <li><strong>Certifications:</strong> Ensure the company is certified and follows industry standards.</li>
+                            <li><strong>Insurance:</strong> Verify that the company is fully insured to protect against any liabilities.</li>
+                            <li><strong>References:</strong> Ask for references or read online reviews to gauge customer satisfaction.</li>
+                            <li><strong>Services Offered:</strong> Make sure they offer the specific services you need, such as trimming, removal, or stump grinding.</li>
+                        </ul>
+                        <p>By considering these factors, you can choose a tree service that meets your needs and ensures the best care for your trees.</p>
+                    </div>
+                </article>
+                <article>
+                    <h3>Benefits of Professional Tree Care</h3>
+                    <div class="blog-excerpt">
+                        <p>Professional tree care offers numerous advantages that contribute to the overall health and aesthetics of your landscape...</p>
+                        <a href="#" class="blog-toggle" role="button" tabindex="0" aria-expanded="false" aria-controls="blog2">Read more...</a>
+                    </div>
+                    <div id="blog2" class="blog-content" role="region" aria-hidden="true">
+                        <p>Professional tree care offers numerous advantages that contribute to the overall health and aesthetics of your landscape. Here are some key benefits:</p>
+                        <ul>
+                            <li><strong>Safety:</strong> Trained arborists can safely handle tree trimming and removal, reducing the risk of accidents.</li>
+                            <li><strong>Health:</strong> Regular maintenance prevents disease and promotes healthy growth.</li>
+                            <li><strong>Aesthetics:</strong> Proper care enhances the appearance of your trees, adding value to your property.</li>
+                            <li><strong>Longevity:</strong> Professional care extends the life of your trees, ensuring they thrive for years to come.</li>
+                            <li><strong>Expertise:</strong> Arborists provide knowledgeable advice tailored to your specific tree care needs.</li>
+                        </ul>
+                        <p>Investing in professional tree care ensures your trees receive the best possible attention, leading to a beautiful and safe environment.</p>
+                    </div>
+                </article>
+            </div>
+            <script>
+                document.querySelectorAll('.blog-toggle').forEach(toggle => {
+                    const targetId = toggle.getAttribute('aria-controls');
+                    const content = document.getElementById(targetId);
+                    toggle.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const expanded = toggle.getAttribute('aria-expanded') === 'true';
+                        toggle.setAttribute('aria-expanded', String(!expanded));
+                        if (content) {
+                            if (!expanded) {
+                                content.classList.add('open');
+                                content.style.height = content.scrollHeight + 'px';
+                                content.setAttribute('aria-hidden', 'false');
+                                toggle.textContent = 'Show less';
+                            } else {
+                                content.style.height = content.scrollHeight + 'px';
+                                requestAnimationFrame(() => {
+                                    content.style.height = '0px';
+                                    content.classList.remove('open');
+                                    content.setAttribute('aria-hidden', 'true');
+                                });
+                                toggle.textContent = 'Read more...';
+                            }
+                        }
+                    });
+                    toggle.addEventListener('keydown', (e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            toggle.click();
+                        }
+                    });
+                });
+            </script>
+        </section>
+        </main>
+        <footer>
+            <p class="footer-text">
+                No Bull Tree Service - Providing expert tree care with integrity and professionalism.<br/> Fully licensed and insured. Serving Eustis, Geneva, Sanford, and Kissimmee.<br>
+                Call us at <a href="tel:4076639069" class="footer-link" aria-label="Call 407 663 9069">407-663-9069</a>.
+            </p>
+        </footer>
+        <button id="scrollToTop" onclick="scrollToTop()">⬆️</button>
+        <script>
+            window.onscroll = function() {
+                var button = document.getElementById('scrollToTop');
+                if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                    button.style.display = 'block';
+                } else {
+                    button.style.display = 'none';
+                }
+            };
+
+            function scrollToTop() {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        </script>
+    </body>
+    </html>
+
