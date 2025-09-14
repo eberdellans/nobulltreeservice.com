@@ -452,7 +452,7 @@ $GAS_ENDPOINT = isset($env['GAS_ENDPOINT']) ? $env['GAS_ENDPOINT'] : '';
                 Call us at <a href="tel:4076639069" class="footer-link" aria-label="Call 407 663 9069">407-663-9069</a>.
             </p>
         </footer>
-        <button id="scrollToTop" onclick="scrollToTop()">⬆️</button>
+        <button id="scrollToTop" onclick="scrollToTop()">^</button>
         <script>
             window.onscroll = function() {
                 var button = document.getElementById('scrollToTop');
