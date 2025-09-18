@@ -1,3 +1,17 @@
+<?php
+$env = array();
+$envPath = dirname(__DIR__) . '/secrets/.env';
+if (is_readable($envPath)) {
+    foreach (file($envPath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $line) {
+        if ($line === '' || $line[0] === '#' || strpos($line, '=') === false) continue;
+        list($k, $v) = array_map('trim', explode('=', $line, 2));
+        $v = trim($v, "\"'\"");
+        $env[$k] = $v;
+    }
+}
+$TURNSTILE_SITE_KEY = isset($env['TURNSTILE_SITE_KEY']) ? $env['TURNSTILE_SITE_KEY'] : '';
+$GAS_ENDPOINT = isset($env['GAS_ENDPOINT']) ? $env['GAS_ENDPOINT'] : '';
+?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -11,7 +25,6 @@
         <meta name="googlebot" content="index, follow">
         <meta name="google" content="notranslate">
         <title>No Bull Tree Service - Expert Tree Care</title>
-        <script src="config.js"></script>
         <script type="application/ld+json">
         {
           "@context": "http://schema.org",
@@ -153,7 +166,6 @@
                             content.style.height = content.scrollHeight + 'px';
                             content.setAttribute('aria-hidden', 'false');
                         } else {
-                            
                             content.style.height = content.scrollHeight + 'px';
                             requestAnimationFrame(() => {
                                 content.style.height = '0px';
@@ -224,7 +236,7 @@
                         <textarea id="message" name="message" rows="4" required></textarea>
 
                         <div class="turnstile-wrapper">
-                            <div class="cf-turnstile" data-sitekey="" data-callback="onTurnstileSuccess"></div>
+                            <div class="cf-turnstile" data-sitekey="<?php echo htmlspecialchars($TURNSTILE_SITE_KEY, ENT_QUOTES); ?>" data-callback="onTurnstileSuccess"></div>
                             <input type="hidden" id="cf-turnstile-response" name="cf-turnstile-response">
                         </div>
 
@@ -258,13 +270,6 @@
             </div>
         </section>
         <script>
-            // Apply config vars if provided (window.ENV)
-            (function(){
-                var ts = document.querySelector('.cf-turnstile');
-                if (window.ENV && window.ENV.TURNSTILE_SITE_KEY && ts) {
-                    ts.setAttribute('data-sitekey', window.ENV.TURNSTILE_SITE_KEY);
-                }
-            })();
             // Simple input masks for phone and ZIP
             (function() {
                 var phone = document.getElementById('phone');
@@ -327,11 +332,11 @@
                 drawer.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', closeMenu); });
             })();
 
-            // Form submit to Google Apps Script (replace ENDPOINT)
+            // Form submit to Google Apps Script (server-injected endpoint)
             (function(){
                 var form = document.getElementById('contactForm');
                 var status = document.getElementById('formStatus');
-                var ENDPOINT = (window.ENV && window.ENV.GAS_ENDPOINT) || '';
+                var ENDPOINT = '<?php echo htmlspecialchars($GAS_ENDPOINT, ENT_QUOTES); ?>';
                 if (!form) return;
                 form.addEventListener('submit', function(e){
                     e.preventDefault();
@@ -357,7 +362,7 @@
                     };
                     fetch(ENDPOINT, {
                         method: 'POST',
-                        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                        headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(payload)
                     }).then(function(res){
                         if (!res.ok) throw new Error('Network');
@@ -365,7 +370,6 @@
                     }).then(function(){
                         if (status) status.textContent = 'Thanks! Your message has been sent.';
                         form.reset();
-                        // Reset Turnstile widget
                         if (window.turnstile && window.turnstile.reset) { window.turnstile.reset(); }
                     }).catch(function(){
                         if (status) status.textContent = 'Sorry, something went wrong. Please try again later.';
@@ -488,4 +492,5 @@
             }
         </script>
     </body>
-</html> 
+    </html>
+
