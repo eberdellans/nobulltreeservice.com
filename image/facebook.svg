@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Facebook app icon (rounded square) per Meta brand guidelines -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
+  <rect x="1" y="1" width="22" height="22" rx="4" ry="4" fill="#1877F2"/>
+  <path fill="#FFFFFF" d="M16.5 8.25h-1.75c-.41 0-.75.34-.75.75v1.75h2.3l-.33 2.5h-1.97V18h-2.6v-4.75h-1.7v-2.5h1.7V9.18c0-1.67 1-2.93 3.06-2.93.88 0 1.53.08 2.03.18v2.82Z"/>
+</svg>
+

@@ -432,6 +432,8 @@ a:visited {
     border-radius: 9999px;
     border: 2px solid rgba(255, 255, 255, 0.85);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+    font-size: 1.125rem; /* Larger font */
+    margin-left: 10px; /* Shift 10px to the right */
 }
 
 .cta-link:hover {
@@ -809,7 +811,7 @@ nav ul li:last-child {
 
 /* Improved form styling */
 #contact .section-foreground form {
-    max-width: 640px;
+    max-width: 560px;
     width: 100%;
     margin: 0 auto 16px auto;
     padding: 24px;
@@ -879,7 +881,8 @@ nav ul li:last-child {
 
 /* Contact CTA block */
 .contact-cta {
-    max-width: 640px;
+    max-width: 720px;
+    width: 100%;
     margin: 12px auto 0 auto;
     padding: 20px;
     background: #ffffff;
@@ -936,10 +939,17 @@ nav ul li:last-child {
     gap: 20px;
 }
 
+/* Contact: equal columns and unified widths on desktop */
 @media (min-width: 900px) {
     .contact-grid {
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 1fr; /* equal columns */
+        column-gap: 24px;
         align-items: start;
+    }
+    #contact .section-foreground form,
+    .contact-cta {
+        max-width: 100%; /* let columns share available width */
+        width: 100%;
     }
 }
 
@@ -960,7 +970,7 @@ nav ul li:last-child {
 } 
 
 /* iPhone safe areas */
-:root { --safe-top: env(safe-area-inset-top); --safe-bottom: env(safe-area-inset-bottom); }
+:root { --safe-top: env(safe-area-inset-top); --safe-bottom: env(safe-area-inset-bottom); --safe-left: env(safe-area-inset-left); --safe-right: env(safe-area-inset-right); }
 
 /***** Mobile nav hamburger and drawer *****/
 .hamburger {
@@ -1016,7 +1026,133 @@ body.menu-open { overflow: hidden; }
     nav .nav-content > ul li:last-child { /* CTA */ display: inline-block; margin-left: auto; }
 }
 
+/* Mobile: center hamburger + CTA at top */
+@media (max-width: 768px) {
+    nav .nav-content { justify-content: center; gap: 10px; }
+    nav .nav-content > ul li:last-child { margin-left: 0; }
+}
+
+/* Slide-in drawer: horizontal links */
+.mobile-menu nav ul { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+.mobile-menu nav ul li { margin: 0; }
+.mobile-menu nav ul li a { padding: 10px 12px; border-radius: 9999px; background: rgba(255,255,255,0.08); }
+.mobile-menu nav ul li a:hover { background: #d2691e; }
+
 /* iPhone polish */
 @supports (padding: max(0px)) {
     nav { padding-top: max(0px, var(--safe-top)); }
 } 
+
+/* Mobile CTA as full-width next to hamburger */
+@media (max-width: 768px) {
+    nav .nav-content { justify-content: space-between; gap: 6px; padding: 6px 8px; }
+    @supports (padding: max(0px)) {
+        nav .nav-content { padding-left: max(6px, var(--safe-left)); padding-right: max(6px, var(--safe-right)); }
+    }
+    nav .nav-content > ul { flex: 1; }
+    nav .nav-content > ul li { display: none; }
+    nav .nav-content > ul li:last-child { display: block; flex: 1; }
+    nav .nav-content > ul li:last-child .cta-link {
+        display: block;
+        width: 100%;
+        margin-left: 6px; /* tighter spacing from hamburger */
+        padding: 12px 18px; /* larger tap target */
+        font-size: 1.2rem; /* larger font on mobile */
+        box-sizing: border-box; /* prevent border from causing overflow */
+    }
+} 
+
+/* Base CTA adjustments */
+.cta-link { box-sizing: border-box; } 
+
+/* Even tighter mobile CTA spacing */
+@media (max-width: 768px) {
+    nav .nav-content { gap: 4px; padding: 4px 6px; }
+    .hamburger { margin-left: max(4px, var(--safe-left)); }
+    nav .nav-content > ul li:last-child .cta-link {
+        margin-left: 4px;
+        padding: 9px 14px;
+        font-size: 1.18rem;
+    }
+}
+
+/* Tighter section spacing */
+section { padding: 32px 16px; }
+.section-foreground, .dafaq { padding: 22px 16px; }
+#services .section-foreground > h3,
+#faq .dafaq > h3,
+#contact > h2,
+#blog > h2 { margin-top: 2px; } 
+
+/* Match Contact container width to Services on desktop */
+@media (min-width: 1024px) {
+    #contact .section-foreground {
+        max-width: 860px;
+        width: 90%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+} 
+
+/* Contact: stack CTA above form and make form full-width */
+#contact .section-foreground form,
+.contact-cta { max-width: 100%; width: 100%; }
+
+.contact-grid { grid-template-columns: 1fr; row-gap: 16px; }
+
+@media (min-width: 900px) {
+    .contact-grid { grid-template-columns: 1fr; }
+}
+
+/* Tighten CTA spacing */
+.contact-cta { padding: 16px; }
+.contact-cta h3 { margin-bottom: 8px; } 
+
+/* Contact CTA layout refinements */
+.contact-cta-inner { display: grid; grid-template-columns: auto 1fr; gap: 12px; align-items: center; }
+.contact-cta-logo { width: 216px; height: 216px; border-radius: 8px; overflow: hidden; }
+.contact-cta-logo img { width: 100%; height: 100%; object-fit: contain; display: block; }
+.contact-cta .contact-list { text-align: left; }
+
+/* Facebook icon: left-aligned alongside details, subtle size */
+.contact-cta .social-icons { display: flex; justify-content: flex-start; gap: 8px; }
+.social-icon--fb { background: transparent; border-radius: 6px; width: auto; height: auto; padding: 0; }
+.social-icon--fb img, .social-icon--fb svg { width: 28px; height: 28px; display: block; }
+
+/* Mobile: stack logo on top, then text; keep icons under text left-aligned */
+@media (max-width: 768px) {
+    .contact-cta-inner { grid-template-columns: 1fr; align-items: start; justify-items: center; }
+    .contact-cta-logo { width: 200px; height: 200px; margin: 0 auto 8px; }
+    .contact-cta-details { width: 100%; }
+    .contact-cta .contact-list { text-align: left; }
+    .contact-cta .social-icons { justify-content: flex-start; }
+} 
+
+/* Hover color for phone/email links */
+.footer-link:hover { color: #d2691e; } 
+
+/* Bigger bull logo in Contact CTA (300%) */
+.contact-cta-logo { width: 216px; height: 216px; border-radius: 8px; overflow: hidden; }
+.contact-cta-logo img { width: 100%; height: 100%; object-fit: contain; }
+
+/* Facebook base logo only and right-aligned */
+.social-icons { justify-content: flex-end; gap: 8px; }
+.social-icon--fb { background: transparent; border-radius: 0; width: auto; height: auto; padding: 0; }
+.social-icon--fb img, .social-icon--fb svg { width: 32px; height: 32px; display: block; } 
+
+/* Contact form alignment and sizing */
+#contact .section-foreground { box-sizing: border-box; }
+#contact .section-foreground form { box-sizing: border-box; width: 100%; margin: 0; padding-left: 16px; padding-right: 16px; }
+
+/* Prevent form-row from causing overflow; align tighter */
+.form-row { column-gap: 8px; }
+@media (min-width: 640px) {
+    .form-row { column-gap: 8px; grid-template-columns: minmax(0, 1fr) auto auto; }
+}
+
+/* Ensure map respects container width (already 100%), keep visual alignment consistent */
+#map { width: 100%; display: block; } 
+
+/* Align CTA card edges with container like the form */
+#contact .section-foreground .contact-cta { box-sizing: border-box; width: 100%; margin: 0; padding-left: 16px; padding-right: 16px; }
+.contact-cta-inner { max-width: 100%; overflow: hidden; } 

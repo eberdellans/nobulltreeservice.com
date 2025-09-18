@@ -172,20 +172,26 @@
             });
         </script>
         <section id="contact">
-            <h2>Contact Us</h2>
+            <h2>Contact Us Today!</h2>
             <div class="section-foreground">
                 <div class="contact-grid">
-                    <div class="contact-cta" aria-labelledby="contact-cta-title">
-                        <h3 id="contact-cta-title">Contact us Today!</h3>
-                        <ul class="contact-list" aria-label="Business contact details">
-                            <li><strong>Name:</strong> No Bull Tree Service</li>
-                            <li><strong>Phone:</strong> <a href="tel:4076639069" class="footer-link">407-663-9069</a></li>
-                            <li><strong>Email:</strong> <a href="mailto:pedro@nobulltreeservice.com" class="footer-link">pedro@nobulltreeservice.com</a></li>
-                        </ul>
-                        <div class="social-icons" aria-label="Social media links">
-                            <a href="https://facebook.com" class="social-icon" aria-label="Facebook" target="_blank" rel="noopener">F</a>
-                            <a href="https://x.com" class="social-icon" aria-label="X (formerly Twitter)" target="_blank" rel="noopener">X</a>
-                            <a href="https://instagram.com" class="social-icon" aria-label="Instagram" target="_blank" rel="noopener">IG</a>
+                    <div class="contact-cta">
+                        <div class="contact-cta-inner">
+                            <div class="contact-cta-logo">
+                                <img src="elements/no-bull-tree-service-transparent-noseearring.png" alt="No Bull Tree Service logo">
+                            </div>
+                            <div class="contact-cta-details">
+                                <ul class="contact-list" aria-label="Business contact details">
+                                    <li><strong>Name:</strong> No Bull Tree Service</li>
+                                    <li><strong>Phone:</strong> <a href="tel:4076639069" class="footer-link">407-663-9069</a></li>
+                                    <li><strong>Email:</strong> <a href="mailto:pedro@nobulltreeservice.com" class="footer-link">pedro@nobulltreeservice.com</a></li>
+                                </ul>
+                                <div class="social-icons" aria-label="Social media links">
+                                    <a href="https://facebook.com" class="social-icon social-icon--fb" aria-label="Facebook" target="_blank" rel="noopener">
+                                        <img src="image/facebook.svg" alt="">
+                                    </a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <form action="#" method="post" id="contactForm">
@@ -350,7 +356,7 @@
                     };
                     fetch(ENDPOINT, {
                         method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
+                        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                         body: JSON.stringify(payload)
                     }).then(function(res){
                         if (!res.ok) throw new Error('Network');
@@ -407,6 +413,24 @@
                 </article>
             </div>
             <script>
+                // Build excerpt up to the first colon from hidden content
+                (function(){
+                    document.querySelectorAll('#blog article').forEach(function(article){
+                        var excerptP = article.querySelector('.blog-excerpt p');
+                        var content = article.querySelector('.blog-content');
+                        if (!excerptP || !content) return;
+                        var firstP = content.querySelector('p');
+                        if (!firstP) return;
+                        var txt = (firstP.textContent || '').trim();
+                        var idx = txt.indexOf(':');
+                        if (idx !== -1) {
+                            var before = txt.slice(0, idx + 1).trim();
+                            var after = txt.slice(idx + 1).trim();
+                            if (before) excerptP.textContent = before;
+                            if (after) firstP.textContent = after; else firstP.remove();
+                        }
+                    });
+                })();
                 document.querySelectorAll('.blog-toggle').forEach(toggle => {
                     const targetId = toggle.getAttribute('aria-controls');
                     const content = document.getElementById(targetId);
