@@ -2,7 +2,10 @@
 <html>
     <head>
         <link rel="stylesheet" href="style.css">
-        <link rel="icon" href="no-bull-tree-service-bull.png">
+        <link rel="icon" href="/image/no-bull-tree-service.png">
+        <link rel="apple-touch-icon" sizes="192x192" href="/image/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="/image/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/image/favicon-16x16.png">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="Professional tree services including trimming, removal, and more. Serving Eustis, Geneva, Sanford, and Kissimmee.">
         <meta name="keywords" content="tree service near me, tree removal service, tree trimming service, stump grinding, emergency tree removal">
@@ -11,13 +14,15 @@
         <meta name="googlebot" content="index, follow">
         <meta name="google" content="notranslate">
         <title>No Bull Tree Service - Expert Tree Care</title>
-        <script src="config.js"></script>
+        <meta http-equiv="Content-Security-Policy"
+              content="default-src 'self'; img-src 'self' data: https:; style-src 'self' 'unsafe-inline' https://unpkg.com; script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com https://static.cloudflareinsights.com https://unpkg.com; connect-src 'self' https://script.google.com; frame-src https://challenges.cloudflare.com https://script.google.com; object-src 'none'; base-uri 'self'; form-action https://script.google.com 'self';">
+        <script src="/config.js"></script>
         <script type="application/ld+json">
         {
           "@context": "http://schema.org",
           "@type": "LocalBusiness",
           "name": "No Bull Tree Service",
-          "image": "https://www.nobulltreeservice.com/logo.png",
+          "image": "https://www.nobulltreeservice.com/image/logo.png",
           "telephone": "407-663-9069",
           "address": {
             "@type": "PostalAddress",
@@ -30,17 +35,18 @@
         }
         </script>
         <!-- Global site tag (gtag.js) - Google Analytics -->
-        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-XXXXX-Y"></script>
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-MFNK811M8L"></script>
         <script>
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);} 
             gtag('js', new Date());
 
-            gtag('config', 'UA-XXXXX-Y');
+            gtag('config', 'G-MFNK811M8L');
         </script>
         <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
         <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
         <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+        <link rel="canonical" href="https://www.nobulltreeservice.com">
     </head>
     <body>
         <a href="#main" class="skip-link">Skip to content</a>
@@ -194,7 +200,8 @@
                             </div>
                         </div>
                     </div>
-                    <form action="#" method="post" id="contactForm">
+                    <iframe name="hidden_submit_frame" style="display:none"></iframe>
+                    <form id="contactForm" action="https://script.google.com/macros/s/AKfycby7xtqMFAxUuNiCN-ORuzwM185Onk_tk8N-zQf9PWmpcPf3B6OefHUoBXap4t6usuwH/exec" method="POST" enctype="text/plain" target="hidden_submit_frame">
                         <label for="name">Name:</label>
                         <input type="text" id="name" name="name" required>
 
@@ -330,45 +337,21 @@
             (function(){
                 var form = document.getElementById('contactForm');
                 var status = document.getElementById('formStatus');
-                var ENDPOINT = (window.ENV && window.ENV.GAS_ENDPOINT) || '';
                 if (!form) return;
                 form.addEventListener('submit', function(e){
-                    e.preventDefault();
                     if (status) status.textContent = '';
                     var token = document.getElementById('cf-turnstile-response')?.value || '';
                     if (!token) {
+                        e.preventDefault();
                         if (status) status.textContent = 'Please complete the Turnstile challenge.';
                         return;
                     }
-                    if (!ENDPOINT) {
-                        if (status) status.textContent = 'Form temporarily offline. Please try again later.';
-                        return;
-                    }
-                    var payload = {
-                        name: form.name.value,
-                        phone: form.phone.value,
-                        address: form.address.value,
-                        city: form.city.value,
-                        state: form.state.value,
-                        zip: form.zip.value,
-                        message: form.message.value,
-                        turnstile_token: token
-                    };
-                    fetch(ENDPOINT, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                        body: JSON.stringify(payload)
-                    }).then(function(res){
-                        if (!res.ok) throw new Error('Network');
-                        return res.json().catch(function(){ return {}; });
-                    }).then(function(){
+                    // Allow native submit to iframe target (no CORS preflight)
+                    // After submit, show success and reset locally
+                    setTimeout(function(){
                         if (status) status.textContent = 'Thanks! Your message has been sent.';
-                        form.reset();
-                        // Reset Turnstile widget
-                        if (window.turnstile && window.turnstile.reset) { window.turnstile.reset(); }
-                    }).catch(function(){
-                        if (status) status.textContent = 'Sorry, something went wrong. Please try again later.';
-                    });
+                        try { form.reset(); if (window.turnstile && window.turnstile.reset) window.turnstile.reset(); } catch(_){}
+                    }, 300);
                 });
             })();
         </script>
